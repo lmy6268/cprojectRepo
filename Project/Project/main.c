@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-user mainUser;
+
 user *logIn(char *Id, char *pwd)
 {	
 	user *nowUser;
@@ -23,5 +23,13 @@ void printBooks(book* books){
 	while(books->next!=NULL){
 		printf("%s\t%s\t%s\t%s\t%s", books->title, books->author, books->publisher, strState[books->state], books->date);
 		books = books->next;
+	}
+}
+
+
+int main(void){
+	int mode;
+	if(mode == 0){
+		
 	}
 }

@@ -7,7 +7,7 @@ enum state{ busy, available };
 char strState[2][20] = {"대출 중","대여 가능"};
 
 //전역변수
-
+user mainUser; //현재 사용자
 //회원관리
 user* signIn(); //회원가입
 user *logIn(char *Id, char *pwd); //로그인
