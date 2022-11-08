@@ -15,10 +15,12 @@ typedef struct Stack stack; //스택
 struct Book
 {
     char* title;//도서 명
-    int state;//대여 현황
-    char* date; //대여 일자
     char* author;//저자명
     char* publisher;//출판사 명
+    int state;//대여 현황
+    char* date; //대여 일자
+    struct Book* next; //연결된 도서
+    
 };
 typedef struct Book book; //도서
 
@@ -27,6 +29,7 @@ struct User
     char* id;//사용자 아이디
     char* pass;//사용자 비밀번호
     struct Book* books;//사용자가 대여한 도서 목록
+    struct User* next;
 };
 typedef struct User user; //사용자
 
@@ -38,10 +41,12 @@ int isEmpty(stack* Stack); //스택이 비었는지 확인
 /*사용자 관련 함수*/
 user *addUser(user* userList); //사용자 생성
 void deleteUser(user* user); //사용자 제거
-user *loadUser(char* id, char* pwd); //사용자 가져오기
+int loadUser(char* id, char* pwd,user* User); //사용자 가져오기
 
 /*도서 관련 함수*/
-book *addBook(book* bookList); //도서 추가
-void deleteBook(book *book);   //도서 제거
+int addBook(book* bookList); //도서 추가
+void deleteBook(book *book);  //도서 제거
+int loadBooks(book* bookList);  //도서 로딩
+
 
 
