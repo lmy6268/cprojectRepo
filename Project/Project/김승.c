@@ -19,13 +19,13 @@ int main() {
 		titleDraw();
 		int menuCode = mainMenu();
 		if (menuCode == 0) {
-
+			secondMenu();
 		}
 		else if (menuCode == 1) {
-
+			
 		}
 		else if (menuCode == 2) {
-
+			return 0;
 		}
 		system("cls");
 	}
@@ -61,73 +61,73 @@ void titleDraw() {
 int mainMenu() {
 	int x = 45;
 	int y = 15;
-	gotoxy(45 - 2, 15);
+	gotoxy(x - 2, y);
 	printf(">  로그인");
-	gotoxy(45, 17);
+	gotoxy(x, y+1);
 	printf("회원가입");
-	gotoxy(45, 19);
-	printf(" 종료");
+	gotoxy(x, y+2);
+	printf("  종료");
 	while (1) {
 		int n = keyControl();
 		switch (n) {
-		case UP: {
-			if (y > 15) {
-				gotoxy(x - 2, y);
-				printf(" ");
-				gotoxy(x - 2, y = y - 2);
-				printf(">");
+			case UP: {
+				if (y > 15) {
+					gotoxy(x - 2, y);
+					printf(" ");
+					gotoxy(x - 2, --y);
+					printf(">");
+				}
+				break;
 			}
-			break;
-		}
-		case DOWN: {
-			if (y < 19) {
-				gotoxy(x - 2, y);
-				printf(" ");
-				gotoxy(x - 2, y = y + 2);
-				printf(">");
+			case DOWN: {
+				if (y < 17) {
+					gotoxy(x - 2, y);
+					printf(" ");
+					gotoxy(x - 2, ++y);
+					printf(">");
+				}
+				break;
 			}
-			break;
-		}
-		case SUBMIT: {
-			return y - 15;
-		}
+			case SUBMIT: {
+				return y - 15;
+			}
 		}
 	}
 }
 
 int secondMenu() {
-	int x = 43;
+	int x = 42;
 	int y = 15;
-	gotoxy(43 - 2, 15);
+	gotoxy(x - 2, y);
 	printf("> 나의 대여 상태");
-	gotoxy(43, 17);
-	printf("  도서대여");
-	gotoxy(43, 19);
-	printf("  로그아웃");
+	gotoxy(x, y + 1);
+	printf("   도서대여");
+	gotoxy(x, y + 2);
+	printf("   로그아웃");
 	while (1) {
 		int n = keyControl();
 		switch (n) {
-		case UP: {
-			if (y > 15) {
-				gotoxy(x - 2, y);
-				printf(" ");
-				gotoxy(x - 2, y = y - 2);
-				printf(">");
+			case UP: {
+				if (y > 15) {
+					gotoxy(x - 2, y);
+					printf(" ");
+					gotoxy(x - 2, --y);
+					printf(">");
+				}
+				break;
 			}
-			break;
-		}
-		case DOWN: {
-			if (y < 19) {
-				gotoxy(x - 2, y);
-				printf(" ");
-				gotoxy(x - 2, y = y + 2);
-				printf(">");
+			case DOWN: {
+				if (y < 17) {
+					gotoxy(x - 2, y);
+					printf(" ");
+					gotoxy(x - 2, ++y);
+					printf(">");
+				}
+				break;
 			}
-			break;
-		}
-		case SUBMIT: {
-			return y - 15;
-		}
+			case SUBMIT: {
+				return y - 15;
+			}
 		}
 	}
 }
