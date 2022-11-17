@@ -24,5 +24,34 @@
     <ClCompile Include="소스.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="login.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="main.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="book.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="menu.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="user.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="book.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="main.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="user.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="menu.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
