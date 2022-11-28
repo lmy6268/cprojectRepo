@@ -61,13 +61,13 @@ void menu() {
         }
         else if (input == 3) {
             saveFile(user, &person);
-            return 0;
+            return ;
         }
         else
             printf("\nError! ReTry! \n\n");
     }
 
-    return 0;
+    return;
 
 }
 
