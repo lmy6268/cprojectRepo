@@ -13,8 +13,8 @@ int openFile(User* ptr, int* num) {
 	}
 
 	//파일에 저장된 데이터를 구조체 배열에 저장
-	while (!feof(fp)) {
-		fscanf(fp, "%s %s %s %s", ptr[*num].name, ptr[*num].number, ptr[*num].id, ptr[*num].pw);
+	while (fscanf(fp, "%d %s %s %s %s ", &ptr[*num].orderNum, ptr[*num].name, ptr[*num].number, ptr[*num].id, ptr[*num].pw)!=-1) {
+		for (int i = 0; i < 3; i++) fscanf(fp, "%d, ", &ptr[*num].books[i]);
 		(*num)++;
 	}
 
@@ -58,14 +58,19 @@ void insert(User* ptr, int* num)
 			if (strcmp(check_id, ptr[i].id) != 0)                           //중복되는 아이디가 없다면 while문 탈출 후
 				break;
 		}
+		
 		printf("사용가능한 아이디입니다.\n"); strcpy(ptr[*num].id, check_id);     // 텍스트파일에 입력
 
 		printf("\n사용하실 비밀번호를 입력해주세요: ");
 		scanf(" %s", ptr[*num].pw);
+		ptr[*num].orderNum = *num; //순서 번호
 
+		for (int j = 0; j < 3; j++) {
+			ptr[*num].books[j] = -1; //초기화
+		}
 
-		(*num)++;
 		printf("회원가입이 완료되었습니다. \n\n");
+		(*num)++;
 	}
 	//유저 정보가 꽉 차면
 	else
@@ -88,7 +93,10 @@ int saveFile(User* ptr, int* num) {
 		//구조체 배열에 저장된 데이터를 파일에 저장
 		//줄바꿈으로 구분하여 저장
 		for (i = 0; i < *num; i++) {
-			fprintf(fp, "%s %s %s %s", ptr[i].name, ptr[i].number, ptr[i].id, ptr[i].pw);
+			fprintf(fp, "%d %s %s %s %s ", ptr[i].orderNum, ptr[i].name, ptr[i].number, ptr[i].id, ptr[i].pw);
+			for (int j = 0; j < 3; j++) {
+				fprintf(fp, "%d, ", ptr[i].books[j]);
+			}
 			fputc('\n', fp);
 		}
 
@@ -101,6 +109,7 @@ int saveFile(User* ptr, int* num) {
 			return 1;
 		}
 		printf("\n  저장되었습니다. \n");
+	
 		return 0;
 	}
 }

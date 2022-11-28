@@ -1,12 +1,8 @@
-#include "main.h"
 #pragma once
-//사용자의 정보를 저장하는 구조체
-typedef struct {
-	char name[30];
-	char number[30];
-	char id[20];
-	char pw[10];
-}User;
+#include "main.h"
+#include "structs.h"
+
+
 
 /*로그인 관련 함수*/
 
