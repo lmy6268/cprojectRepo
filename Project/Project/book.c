@@ -73,20 +73,28 @@ void drawBooks(BOOK *books, int *list, int size,int type) {
 			sprintf(cmdLine, "mode con cols=250 lines=%d | title 도서 검색 결과 ", (size + 1) * 10);
 			system(cmdLine); // 콘솔창 크기 및 제목 설정
 			printf("< 도서 검색 > \n");
+			printf("%s", bar);
+			printf("| %s |%-80s |%-80s|%-30s | %s |\n", "번호", "                                       도서명", "                                       저자명", "            출판사명", "  상태  ");
+			printf("%s", bar);
+			for (int t = 0; *(list + t) != 0; t++) {
+				int i = *(list + t) - 1;
+				printf("|  %02d  |%-80s |%-80s|%-30s | %s |\n", t + 1, (books + i)->title, (books + i)->author, (books + i)->publisher, state[(books + i)->state]);
+				printf("%s", bar);
+			}
 		}
 		else if (type == 1) //나의 대여 목록
 
 		{
 			system("mode con cols=250 lines=40 | title 나의 대여 목록"); // 콘솔창 크기 및 제목 설정
 			printf("< 나의 대여 목록 > \n");
-		}
-		printf("%s", bar);
-		printf("| %s |%-80s |%-80s|%-30s | %s |\n", "번호", "                                       도서명", "                                       저자명", "            출판사명", "  상태  ");
-		printf("%s", bar);
-		for (int t = 0; *(list + t) != 0; t++) {
-			int i = *(list + t) - 1;
-			printf("|  %02d  |%-80s |%-80s|%-30s | %s |\n", t + 1, (books + i)->title, (books + i)->author, (books + i)->publisher, state[(books + i)->state]);
 			printf("%s", bar);
+			printf("| %s |%-80s |%-80s|%-30s | %s |\n", "번호", "                                       도서명", "                                       저자명", "            출판사명", "  상태  ");
+			printf("%s", bar);
+			for (int t = 0; *(list + t) != 0 && *(list + t) != -1; t++) {
+				int i = *(list + t) - 1;
+				printf("|  %02d  |%-80s |%-80s|%-30s | %s |\n", t + 1, (books + i)->title, (books + i)->author, (books + i)->publisher, state[(books + i)->state]);
+				printf("%s", bar);
+			}
 		}
 	}
 	//전체 리스트인 경우 
@@ -171,28 +179,51 @@ void returnBook(BOOK *books, int idx, User *user){
 		fprintf(fp, "에러가 생겼습니다.");
 		exit(1);
 	}
-	i = 0;
-	while (1) {
-		if (*((user->books) + i) == idx+1)
-		{
-			*((user->books) + i) = -1; //대여한 도서를 리스트에 담음
+	int index = -1;
+	int tmp = 0;
+	for (int i = 0; i < 3; i++) {
+		//위치 찾기 
+		if (*((user->books) + i) == idx + 1) {
+			index = i;
 			break;
 		}
-		i++;
 	}
+	switch (index)
+	{
+	case 0:
+		tmp = *((user->books));
+		*((user->books)) = *((user->books) + 1);
+		*((user->books) + 1) = tmp;
 
+		 tmp = *((user->books) + 1);
+		 *((user->books)+1) = *((user->books) + 2);
+		 *((user->books) + 2) = tmp;
 
+		 *((user->books) + 2) = -1; //끝에 데이터를 옮기고 초기화 
+
+		break;
+	case 1:
+		tmp = *((user->books) + 1);
+		*((user->books) + 1) = *((user->books) + 2);
+		*((user->books) + 2) = tmp;
+
+		*((user->books) + 2) = -1; //끝에 데이터를 옮기고 초기화 
+		break;
+	default:
+		*((user->books) + 2) = -1; 
+		break;
+	}
 	User *users = user - (user->orderNum);
 	for (i = 0; strcmp((users + i)->id, ""); i++) {
 		fprintf(fp, "%d %s %s %s %s ", (users + i)->orderNum, (users + i)->name, (users + i)->number, (users + i)->id, (users + i)->pw);
 		for (int j = 0; j < 3; j++) {
 			fprintf(fp, "%d, ", *((users + j)->books + j));
 		}
-		fputc("\n", fp);
+		fputc('\n', fp);
 	}
 	int state = fclose(fp);
 
-	printf("%s 대여가 완료되었습니다.!\n", (books + idx)->title);
+	printf("%s 반납이 완료되었습니다.!\n", (books + idx)->title);
 	Sleep(1000);
 }
 
