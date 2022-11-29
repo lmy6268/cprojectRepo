@@ -120,15 +120,53 @@ void showBookMenu(User *nowUser) {
 }
 void showBorrowList(User *nowUser, BOOK *books) {
 	int x = 2, y = 4, length = 0, idx = 0;
-	for (int i = 0; *((nowUser->books) + i) != -1 && i < 3; i++)length++;
 	system("cls");
-	if (*(nowUser->books) == -1) {
-		system("mode con cols=100 lines=40 | title 나의 대여 목록"); // 콘솔창 크기 및 제목 설정
-		printf("< 나의 대여 목록 > \n");
-		printf("아직 대여중인 도서가 없습니다. \n");
+	while (1) {
+		for (int i = 0; *((nowUser->books) + i) != -1 && i < 3; i++)length++;
+		if (*(nowUser->books) == -1) {
+			system("mode con cols=100 lines=40 | title 나의 대여 목록"); // 콘솔창 크기 및 제목 설정
+			printf("< 나의 대여 목록 > \n");
+			printf("아직 대여중인 도서가 없습니다. \n");
+			Sleep(2000);
+			return;
+		}
+		else {
+			while (1) {
+				system("cls");
+				drawBooks(books, nowUser->books, length, 1);
+				gotoxy(x - 2, y);
+				printf(">");
+				gotoxy(x, y + (length * 2));
+				printf(" 1. 이전 화면으로 \n");
+				int selected = selectedOption(x, y, y, y + (length * 2), 1);
+				if (selected <= length) {
+					while (1) {
+						system("cls");
+						int idx = *((nowUser->books) + selected - 1) - 1;
+						BOOK *target = books + idx; //대상 도서
+						printf("%s을 반납 하시겠습니까? ", target->title);
+						gotoxy(x - 2, y);
+						printf(">");
+						gotoxy(x, y);
+						printf(" 1. 네");
+						gotoxy(x, y + 1);
+						printf(" 2. 아니오");
+						gotoxy(x - 2, y);
+						int selected = selectedOption(x, y, y, y + 1, 0);
+						if (selected == 0) {
+							system("cls");
+							returnBook(books, idx, nowUser);
+							break;
+						}
+						else break;
+					}
+					break;
+				}
+				else return;
+			}
+		}
 	}
-	else drawBooks(books, nowUser->books, length, 1);
-	Sleep(2000);
+
 
 }
 //도서 검색화면
@@ -178,14 +216,14 @@ void showSubBookSearch(User *nowUser, BOOK *books) {
 					system("cls");
 					system("mode con cols=100 lines=40 | title 도서 검색"); // 콘솔창 크기 및 제목 설정
 					printf("\n%s 도서를 대여하시겠습니까? ", (books + idx)->title);
-					gotoxy(x - 2, y+1);
+					gotoxy(x - 2, y + 1);
 					printf(">");
 					gotoxy(x, y + 1);
 					printf("  1. 네 \n");
 					gotoxy(x, y + 2);
 					printf("  2. 아니오 \n");
 					gotoxy(x, y + 1);
-					int selected = selectedOption(x, y, y+1, y + 2, 0);
+					int selected = selectedOption(x, y, y + 1, y + 2, 0);
 					if (selected == 0) {
 						system("cls");
 						rentBook(books, idx, nowUser);
@@ -221,7 +259,38 @@ void showBookSearch(User *nowUser, BOOK *books) {
 		int selected = selectedOption(x, y, y, y + (bookLength * 2) + 2, 1);
 		gotoxy(x - 2, y + (bookLength * 2) + 5);
 		if (selected <= bookLength) {
-			printf("%s", (books + selected - 1)->title);
+			int length = 0;
+			for (int i = 0; *((nowUser->books) + i) != -1 && i < 3; i++)length++;
+			int idx = selected - 1;
+			if ((books + idx)->state == 1) {
+				system("cls");
+				printf("이미 대여 중인 도서입니다.");
+				Sleep(1000);
+			}
+			else if (length == 3) {
+				system("cls");
+				printf("대여 목록이 가득 찼습니다. 반납 후 이용해 주세요.");
+				Sleep(1000);
+			}
+			else while (1) {
+				system("cls");
+				system("mode con cols=100 lines=40 | title 도서 검색"); // 콘솔창 크기 및 제목 설정
+				printf("\n%s 도서를 대여하시겠습니까? ", (books + idx)->title);
+				gotoxy(x - 2, y + 1);
+				printf(">");
+				gotoxy(x, y + 1);
+				printf("  1. 네 \n");
+				gotoxy(x, y + 2);
+				printf("  2. 아니오 \n");
+				gotoxy(x, y + 1);
+				int selected = selectedOption(x, y, y + 1, y + 2, 0);
+				if (selected == 0) {
+					system("cls");
+					rentBook(books, idx, nowUser);
+					break;
+				}
+				else break;
+			}
 		}
 		else {
 			if (selected - bookLength == 1) {
